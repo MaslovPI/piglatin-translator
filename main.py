@@ -1,4 +1,5 @@
 import argparse
+import string
 
 
 def main():
@@ -8,15 +9,31 @@ def main():
     prompt = args.user_prompt
 
     words = prompt.split()
-    new_words = []
-    for word in words:
-        first_letter = word[0].lower()
-        if is_consonant(first_letter):
-            new_word = word[1:] + first_letter + "ay"
-        else:
-            new_word = word + "ay"
-        new_words.append(new_word)
+    new_words = [translate_with_puctuation(word) for word in words]
     print(" ".join(new_words))
+
+
+def translate_with_puctuation(text):
+    if not text:
+        return ""
+
+    stripped = text.rstrip(string.punctuation)
+    punctuation_saved = text[len(stripped) :]
+
+    is_initially_capital = text[0].isupper()
+
+    stripped_lower = stripped.lower()
+    translated = translate(stripped_lower)
+
+    if is_initially_capital:
+        translated = translated.capitalize()
+
+    return translated + punctuation_saved
+
+
+def translate(word) -> str:
+    first_letter = word[0]
+    return word[1:] + first_letter + "ay" if is_consonant(first_letter) else word + "ay"
 
 
 def is_consonant(letter):
