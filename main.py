@@ -23,7 +23,7 @@ def translate_with_puctuation(text):
     is_initially_capital = text[0].isupper()
 
     stripped_lower = stripped.lower()
-    translated = translate(stripped_lower)
+    translated = translate(stripped_lower) if stripped_lower else ""
 
     if is_initially_capital:
         translated = translated.capitalize()
